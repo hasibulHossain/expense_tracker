@@ -42,24 +42,52 @@ class _MyHomePageState extends State<MyHomePage> {
     ),
   ];
 
+  void addTransaction({required String title, required num amount}) {
+    final tx = Transaction(
+      title: title,
+      amount: amount,
+      time: DateTime.now(),
+      id: DateTime.now().toString(),
+    );
+
+    setState(() {
+      _transactions.add(tx);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Expense Tracker')),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Container(
-            width: double.infinity,
-            child: const Card(
-              child: Text('Chart'),
-              color: Colors.green,
-            ),
+      appBar: AppBar(
+        title: const Text('Expense Tracker'),
+        actions: <Widget>[
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.add),
           ),
-          NewTransaction(),
-          TransactionList(_transactions),
         ],
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              width: double.infinity,
+              child: const Card(
+                child: Text('Chart'),
+                color: Colors.green,
+              ),
+            ),
+            NewTransaction(addTransaction),
+            TransactionList(_transactions),
+          ],
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add),
+        onPressed: () {},
       ),
     );
   }
