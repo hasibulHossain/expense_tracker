@@ -55,6 +55,11 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void _startAddNewTransaction(BuildContext ctx) {
+    // showModalBottomSheet is a flutter given function.
+    showModalBottomSheet(context: ctx, builder: (_) => NewTransaction(addTransaction),);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,7 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
         title: const Text('Expense Tracker'),
         actions: <Widget>[
           IconButton(
-            onPressed: () {},
+            onPressed: () => _startAddNewTransaction(context),
             icon: const Icon(Icons.add),
           ),
         ],
@@ -79,7 +84,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 color: Colors.green,
               ),
             ),
-            NewTransaction(addTransaction),
             TransactionList(_transactions),
           ],
         ),
@@ -87,7 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
-        onPressed: () {},
+        onPressed: () => _startAddNewTransaction(context),
       ),
     );
   }
