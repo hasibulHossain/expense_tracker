@@ -32,18 +32,18 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _transactions = [
     // make transactions private property by adding _
-    Transaction(
-      id: 't1',
-      title: 'Vehicle',
-      amount: 23.9,
-      time: DateTime.now(),
-    ),
-    Transaction(
-      id: 't2',
-      title: 'Food',
-      amount: 22.90,
-      time: DateTime.now(),
-    ),
+    // Transaction(
+    //   id: 't1',
+    //   title: 'Vehicle',
+    //   amount: 23.9,
+    //   time: DateTime.now(),
+    // ),
+    // Transaction(
+    //   id: 't2',
+    //   title: 'Food',
+    //   amount: 22.90,
+    //   time: DateTime.now(),
+    // ),
   ];
 
   void addTransaction({required String title, required num amount}) {
