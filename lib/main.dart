@@ -16,6 +16,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Expanse Tracker',
       home: MyHomePage(),
+      theme: ThemeData(
+        primarySwatch: Colors.purple,
+        accentColor: Colors.pink,
+      ),
     );
   }
 }
@@ -57,7 +61,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _startAddNewTransaction(BuildContext ctx) {
     // showModalBottomSheet is a flutter given function.
-    showModalBottomSheet(context: ctx, builder: (_) => NewTransaction(addTransaction),);
+    showModalBottomSheet(
+      context: ctx,
+      builder: (_) => NewTransaction(addTransaction),
+    );
   }
 
   @override
@@ -88,7 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () => _startAddNewTransaction(context),

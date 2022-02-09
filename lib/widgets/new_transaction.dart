@@ -20,8 +20,8 @@ class _NewTransactionState extends State<NewTransaction> {
 
     if(title.isEmpty || amount <= 0) return;
 
-    widget.createTransaction(title: title, amount: amount);
-    Navigator.of(context).pop();
+    widget.createTransaction(title: title, amount: amount); // widget is provided automatically;
+    Navigator.of(context).pop(); // context is provided automatically to Stateful  widget;
   }
 
   @override
