@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 class NewTransaction extends StatefulWidget {
   final Function createTransaction;
 

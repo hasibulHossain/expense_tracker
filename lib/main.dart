@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import './models/transaction.dart';
 import 'widgets/transaction_list.dart';
 import 'widgets/new_transaction.dart';
+import 'widgets/chart.dart';
 
 void main() => runApp(MyApp());
 
@@ -38,12 +39,6 @@ class _MyHomePageState extends State<MyHomePage> {
     //   amount: 23.9,
     //   time: DateTime.now(),
     // ),
-    // Transaction(
-    //   id: 't2',
-    //   title: 'Food',
-    //   amount: 22.90,
-    //   time: DateTime.now(),
-    // ),
   ];
 
   void addTransaction({required String title, required num amount}) {
@@ -67,6 +62,10 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  List<Transaction> get _lastSevenDaysTransactions {
+    return  _transactions.where((element) => element.time.isAfter(DateTime.now().subtract(const Duration(days: 7)))).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,13 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Container(
-              width: double.infinity,
-              child: const Card(
-                child: Text('Chart'),
-                color: Colors.green,
-              ),
-            ),
+            Chart(_lastSevenDaysTransactions),
             TransactionList(_transactions),
           ],
         ),
