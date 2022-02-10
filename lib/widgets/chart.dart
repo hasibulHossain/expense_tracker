@@ -30,7 +30,7 @@ class Chart extends StatelessWidget {
         'day': DateFormat.E().format(day).substring(0, 1),
         'amount': totalAmountOnADay,
       };
-    });
+    }).reversed.toList();
   }
 
   /// Will calculate whole transaction of a week.
@@ -49,18 +49,24 @@ class Chart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print('whole week $wholeWeekSpendingInTotal');
-    return Card(
-      child: Container(
-        padding: const EdgeInsets.all(10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: getTotalWeekTransactions.map((element) {
-            return ChartBar(
-              weekDay: (element['day'] as String),
-              spendingAmount: element['amount'] as num,
-              spendingPctOfTotal: getRatioOfTransaction(element['amount'] as num),
-            );
-          }).toList(),
+    return Container(
+      padding: const EdgeInsets.only(top: 10),
+      child: Card(
+        child: Container(
+          padding: const EdgeInsets.all(10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: getTotalWeekTransactions.map((element) {
+              return Flexible(
+                fit: FlexFit.tight,
+                child: ChartBar(
+                  weekDay: (element['day'] as String),
+                  spendingAmount: element['amount'] as num,
+                  spendingPctOfTotal: getRatioOfTransaction(element['amount'] as num),
+                ),
+              );
+            }).toList(),
+          ),
         ),
       ),
     );

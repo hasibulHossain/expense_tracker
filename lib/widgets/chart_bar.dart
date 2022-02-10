@@ -10,17 +10,41 @@ class ChartBar extends StatelessWidget {
       required this.spendingAmount,
       required this.spendingPctOfTotal});
 
+  String getShorterVal(int val) {
+    if (val > 1000 && val < 1000000) {
+      double convertInThousand = val / 1000;
+      return '\$${convertInThousand.toInt()}k';
+    }
+    
+    if (val > 1000000 && val < 100000000) {
+      double convertInThousand = val / 1000000;
+      return '\$${convertInThousand.toInt()}m';
+    }
+
+    if (val > 100000000) {
+      double convertInThousand = val / 100000000;
+      return '\$${convertInThousand.toInt()}B';
+    }
+    return '\$${val.toInt()}';
+  }
+
   @override
   Widget build(BuildContext context) {
     // print('spending total percantage $spendingPctOfTotal, total: $spendingAmount, weekday $weekDay');
     return Column(
       children: <Widget>[
-        Text('${spendingAmount.toInt()}'),
+        Text(
+          getShorterVal(spendingAmount.toInt()),
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         const SizedBox(
           height: 5,
         ),
         Container(
-          height: 60,
+          height: 100,
           width: 10,
           child: Stack(
             children: <Widget>[
@@ -39,7 +63,7 @@ class ChartBar extends StatelessWidget {
                 child: Container(
                   decoration: BoxDecoration(
                     color: Theme.of(context).primaryColor,
-                    borderRadius: BorderRadius.circular(19),
+                    borderRadius: BorderRadius.circular(10),
                   ),
                 ),
               )
@@ -49,7 +73,10 @@ class ChartBar extends StatelessWidget {
         const SizedBox(
           height: 5,
         ),
-        Text(weekDay),
+        Text(
+          weekDay,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
       ],
     );
   }

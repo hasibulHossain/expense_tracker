@@ -8,6 +8,24 @@ class TransactionList extends StatelessWidget {
 
   TransactionList(this.transactions);
 
+  String getShorterVal(int val) {
+    if (val >= 1000 && val < 1000000) {
+      double convertInThousand = val / 1000;
+      return '\$${convertInThousand.toInt()}k';
+    }
+    
+    if (val >= 1000000 && val < 100000000) {
+      double convertInThousand = val / 1000000;
+      return '\$${convertInThousand.toInt()}m';
+    }
+
+    if (val > 100000000) {
+      double convertInThousand = val / 100000000;
+      return '\$${convertInThousand.toInt()}B';
+    }
+    return '\$${val.toInt()}';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -60,12 +78,20 @@ class TransactionList extends StatelessWidget {
                                 color: Theme.of(context).primaryColor,
                                 borderRadius: BorderRadius.circular(4),
                               ),
-                              child: Text(
-                                '\$${item.amount.toStringAsFixed(2)}',
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
+                              child: Container(
+                                width: 80,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      getShorterVal(item.amount.toInt()),
+                                      style: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
