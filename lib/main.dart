@@ -19,7 +19,6 @@ class MyApp extends StatelessWidget {
       home: MyHomePage(),
       theme: ThemeData(
         primarySwatch: Colors.purple,
-        accentColor: Colors.pink,
       ),
     );
   }
@@ -62,6 +61,12 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  void deleteTransaction (String id) {
+    setState(() {
+      _transactions.removeWhere((element) => id == element.id);
+    });
+  }
+
   List<Transaction> get _lastSevenDaysTransactions {
     return  _transactions.where((element) => element.time.isAfter(DateTime.now().subtract(const Duration(days: 7)))).toList();
   }
@@ -84,7 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Chart(_lastSevenDaysTransactions),
-            TransactionList(_transactions),
+            TransactionList(_transactions, deleteTransaction),
           ],
         ),
       ),

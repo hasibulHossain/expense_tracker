@@ -5,15 +5,16 @@ import '../models/transaction.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
+  final Function deleteTransaction;
 
-  TransactionList(this.transactions);
+  TransactionList(this.transactions, this.deleteTransaction);
 
   String getShorterVal(int val) {
     if (val >= 1000 && val < 1000000) {
       double convertInThousand = val / 1000;
       return '\$${convertInThousand.toInt()}k';
     }
-    
+
     if (val >= 1000000 && val < 100000000) {
       double convertInThousand = val / 1000000;
       return '\$${convertInThousand.toInt()}m';
@@ -117,7 +118,22 @@ class TransactionList extends StatelessWidget {
                                 ),
                               ),
                             ],
-                          )
+                          ),
+                          Flexible(
+                            fit: FlexFit.tight,
+                            child: Container(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  IconButton(
+                                    onPressed: () => deleteTransaction(item.id),
+                                    icon: Icon(Icons.delete),
+                                    color: Colors.red,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),

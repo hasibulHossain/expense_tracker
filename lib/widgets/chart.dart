@@ -27,7 +27,7 @@ class Chart extends StatelessWidget {
       }
 
       return {
-        'day': DateFormat.E().format(day).substring(0, 1),
+        'day': DateFormat.E().format(day).substring(0, 2),
         'amount': totalAmountOnADay,
       };
     }).reversed.toList();
