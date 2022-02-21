@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -31,32 +34,71 @@ class _NewTransactionState extends State<NewTransaction> {
         .pop(); // context is provided automatically to Stateful  widget;
   }
 
+    void _showDatePicker(ctx) {
+    // showCupertinoModalPopup is a built-in function of the cupertino library
+    showCupertinoModalPopup(
+        context: ctx,
+        builder: (_) => Container(
+              height: 300,
+              color: const Color.fromARGB(255, 255, 255, 255),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 200,
+                    child: CupertinoDatePicker(
+                        initialDateTime: DateTime.now(),
+                        maximumDate: DateTime.now(),
+                        minimumDate: DateTime(2022),
+                        onDateTimeChanged: (value) {
+                          if (value == null) return;
+                          setState(() {
+                            _selectedDate = value;
+                          });
+                        }),
+                  ),
+
+                  // Close the modal
+                  CupertinoButton(
+                    child: const Text('OK'),
+                    onPressed: () => Navigator.of(ctx).pop(),
+                  )
+                ],
+              ),
+            ));
+  }
+
   void _datePicker() {
-    showDatePicker(
-            context: context,
-            initialDate: DateTime.now(),
-            firstDate: DateTime(2020),
-            lastDate: DateTime.now())
-        .then((value) {
-      if (value == null) return;
-      setState(() {
-        _selectedDate = value;
+    if(Platform.isIOS) {
+      _showDatePicker(context);
+    }
+
+    if(Platform.isAndroid) {
+      showDatePicker(
+              context: context,
+              initialDate: DateTime.now(),
+              firstDate: DateTime(2020),
+              lastDate: DateTime.now())
+          .then((value) {
+        if (value == null) return;
+        setState(() {
+          _selectedDate = value;
+        });
       });
-    });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView( 
+    return SingleChildScrollView(
       child: Card(
         elevation: 5,
         child: Container(
           padding: EdgeInsets.only(
-            top: 10, 
-            right: 10, 
-            bottom: MediaQuery.of(context).viewInsets.bottom + 10, // This will take keyboard height along with 10 pixel;
-            left: 10
-          ),
+              top: 10,
+              right: 10,
+              bottom: MediaQuery.of(context).viewInsets.bottom +
+                  10, // This will take keyboard height along with 10 pixel;
+              left: 10),
           child: Column(
             children: <Widget>[
               TextField(
@@ -86,11 +128,15 @@ class _NewTransactionState extends State<NewTransaction> {
                           ? 'Not chosen'
                           : DateFormat.yMd().format(_selectedDate as DateTime),
                     ),
-                    FlatButton(
-                      onPressed: _datePicker,
-                      child: const Text('Choose Date'),
-                      textColor: Theme.of(context).primaryColor,
-                    ),
+                    Platform.isIOS
+                        ? CupertinoButton(
+                            child: const Text('Choose Date'),
+                            onPressed: _datePicker)
+                        : FlatButton(
+                            onPressed: _datePicker,
+                            child: const Text('Choose Date'),
+                            textColor: Theme.of(context).primaryColor,
+                          ),
                   ],
                 ),
               ),

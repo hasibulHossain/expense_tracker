@@ -1,7 +1,8 @@
 // core imports
 import 'dart:io';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart'; // for android type style
+import 'package:flutter/cupertino.dart'; // for ios style
 import 'package:flutter/services.dart';
 
 // third party imports
@@ -12,9 +13,10 @@ import 'widgets/transaction_list.dart';
 import 'widgets/new_transaction.dart';
 import 'widgets/chart.dart';
 
-void main(){
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitUp]);
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitUp]);
   runApp(MyApp());
 }
 
@@ -83,8 +85,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   @override
-  Widget build(BuildContext  ) {
-    final appBar = AppBar(
+  Widget build(BuildContext) {
+    final PreferredSizeWidget appBar = AppBar(
       title: const Text('Expense Tracker'),
       actions: <Widget>[
         IconButton(
@@ -94,33 +96,57 @@ class _MyHomePageState extends State<MyHomePage> {
       ],
     );
 
-    return Scaffold(
-      appBar: appBar,
-      body: SingleChildScrollView(
+    final Widget screenBody = SafeArea(
+      child: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Container(
               height: (MediaQuery.of(context).size.height -
-                      appBar.preferredSize.height - MediaQuery.of(context).padding.top) *
+                      appBar.preferredSize.height -
+                      MediaQuery.of(context).padding.top) *
                   0.4,
               child: Chart(_lastSevenDaysTransactions),
             ),
             Container(
               height: (MediaQuery.of(context).size.height -
-                      appBar.preferredSize.height - MediaQuery.of(context).padding.top) *
+                      appBar.preferredSize.height -
+                      MediaQuery.of(context).padding.top) *
                   0.6, // calculate transaction list height dynamically.
               child: TransactionList(_transactions, deleteTransaction),
             ),
           ],
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: Platform.isAndroid ? FloatingActionButton(
-        child: const Icon(Icons.add),
-        onPressed: () => _startAddNewTransaction(context),
-      ) : Container(),
     );
+
+    return Platform.isIOS
+        ? CupertinoPageScaffold(
+            navigationBar: CupertinoNavigationBar(
+              middle: const Text('Expense tracker'),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  GestureDetector(
+                    child: Icon(CupertinoIcons.add),
+                    onTap: () => _startAddNewTransaction(context),
+                  )
+                ],
+              ),
+            ),
+            child: screenBody,
+          )
+        : Scaffold(
+            appBar: appBar,
+            body: screenBody,
+            floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+            floatingActionButton: Platform.isAndroid
+                ? FloatingActionButton(
+                    child: const Icon(Icons.add),
+                    onPressed: () => _startAddNewTransaction(context),
+                  )
+                : Container(),
+          );
   }
 }
