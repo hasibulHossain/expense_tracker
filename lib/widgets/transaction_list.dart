@@ -9,7 +9,7 @@ class TransactionList extends StatelessWidget {
 
   TransactionList(this.transactions, this.deleteTransaction);
 
-  String getShorterVal(int val) {
+  String getShorterVal(int val) { 
     if (val >= 1000 && val < 1000000) {
       double convertInThousand = val / 1000;
       return '\$${convertInThousand.toInt()}k';
@@ -31,7 +31,6 @@ class TransactionList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(top: 10),
-      height: 500,
       width: double.infinity,
       child: transactions.isEmpty
           ? Column(

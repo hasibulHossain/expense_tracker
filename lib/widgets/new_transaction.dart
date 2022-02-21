@@ -26,8 +26,9 @@ class _NewTransactionState extends State<NewTransaction> {
         title: title,
         amount: amount,
         time: _selectedDate); // widget is provided automatically;
-        
-    Navigator.of(context).pop(); // context is provided automatically to Stateful  widget;
+
+    Navigator.of(context)
+        .pop(); // context is provided automatically to Stateful  widget;
   }
 
   void _datePicker() {
@@ -46,58 +47,66 @@ class _NewTransactionState extends State<NewTransaction> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 5),
+    return SingleChildScrollView( 
       child: Card(
-        child: Column(
-          children: <Widget>[
-            TextField(
-              decoration: const InputDecoration(
-                hintText: 'Title',
-                labelText: 'Title',
+        elevation: 5,
+        child: Container(
+          padding: EdgeInsets.only(
+            top: 10, 
+            right: 10, 
+            bottom: MediaQuery.of(context).viewInsets.bottom + 10, // This will take keyboard height along with 10 pixel;
+            left: 10
+          ),
+          child: Column(
+            children: <Widget>[
+              TextField(
+                decoration: const InputDecoration(
+                  hintText: 'Title',
+                  labelText: 'Title',
+                ),
+                controller: _titleController,
+                onSubmitted: (_) => _submitData(),
               ),
-              controller: _titleController,
-              onSubmitted: (_) => _submitData(),
-            ),
-            TextField(
-              decoration: const InputDecoration(
-                labelText: 'Amount',
+              TextField(
+                decoration: const InputDecoration(
+                  labelText: 'Amount',
+                ),
+                controller: _amountController,
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
+                onSubmitted: (_) => _submitData(),
               ),
-              controller: _amountController,
-              keyboardType:
-                  const TextInputType.numberWithOptions(decimal: true),
-              onSubmitted: (_) => _submitData(),
-            ),
-            const SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.only(top: 5, bottom: 20),
-              child: Row(
+              const SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.only(top: 5, bottom: 20),
+                child: Row(
+                  children: [
+                    Text(
+                      _selectedDate == null
+                          ? 'Not chosen'
+                          : DateFormat.yMd().format(_selectedDate as DateTime),
+                    ),
+                    FlatButton(
+                      onPressed: _datePicker,
+                      child: const Text('Choose Date'),
+                      textColor: Theme.of(context).primaryColor,
+                    ),
+                  ],
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text(
-                    _selectedDate == null
-                        ? 'Not chosen'
-                        : DateFormat.yMd().format(_selectedDate as DateTime),
-                  ),
-                  FlatButton(
-                    onPressed: _datePicker,
-                    child: const Text('Choose Date'),
-                    textColor: Theme.of(context).primaryColor,
+                  RaisedButton(
+                    onPressed: _submitData,
+                    child: const Text('Add Transaction'),
+                    color: Colors.pink,
+                    textColor: Colors.white,
                   ),
                 ],
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                RaisedButton(
-                  onPressed: _submitData,
-                  child: const Text('Add Transaction'),
-                  color: Colors.pink,
-                  textColor: Colors.white,
-                ),
-              ],
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

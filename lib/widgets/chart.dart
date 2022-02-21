@@ -1,10 +1,9 @@
-import 'package:expense_tracker/widgets/chart_bar.dart';
 import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
 
 import '../models/transaction.dart';
-import './new_transaction.dart';
+import './chart_bar.dart';
 
 class Chart extends StatelessWidget {
   final List<Transaction> recentTransactions;
@@ -48,7 +47,6 @@ class Chart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('whole week $wholeWeekSpendingInTotal');
     return Container(
       padding: const EdgeInsets.only(top: 10),
       child: Card(

@@ -1,5 +1,8 @@
 // core imports
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 // third party imports
 
@@ -9,7 +12,11 @@ import 'widgets/transaction_list.dart';
 import 'widgets/new_transaction.dart';
 import 'widgets/chart.dart';
 
-void main() => runApp(MyApp());
+void main(){
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitUp]);
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -40,7 +47,8 @@ class _MyHomePageState extends State<MyHomePage> {
     // ),
   ];
 
-  void addTransaction({required String title, required num amount, required DateTime time}) {
+  void addTransaction(
+      {required String title, required num amount, required DateTime time}) {
     final tx = Transaction(
       title: title,
       amount: amount,
@@ -61,43 +69,58 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  void deleteTransaction (String id) {
+  void deleteTransaction(String id) {
     setState(() {
       _transactions.removeWhere((element) => id == element.id);
     });
   }
 
   List<Transaction> get _lastSevenDaysTransactions {
-    return  _transactions.where((element) => element.time.isAfter(DateTime.now().subtract(const Duration(days: 7)))).toList();
+    return _transactions
+        .where((element) => element.time
+            .isAfter(DateTime.now().subtract(const Duration(days: 7))))
+        .toList();
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext  ) {
+    final appBar = AppBar(
+      title: const Text('Expense Tracker'),
+      actions: <Widget>[
+        IconButton(
+          onPressed: () => _startAddNewTransaction(context),
+          icon: const Icon(Icons.add),
+        ),
+      ],
+    );
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Expense Tracker'),
-        actions: <Widget>[
-          IconButton(
-            onPressed: () => _startAddNewTransaction(context),
-            icon: const Icon(Icons.add),
-          ),
-        ],
-      ),
+      appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Chart(_lastSevenDaysTransactions),
-            TransactionList(_transactions, deleteTransaction),
+            Container(
+              height: (MediaQuery.of(context).size.height -
+                      appBar.preferredSize.height - MediaQuery.of(context).padding.top) *
+                  0.4,
+              child: Chart(_lastSevenDaysTransactions),
+            ),
+            Container(
+              height: (MediaQuery.of(context).size.height -
+                      appBar.preferredSize.height - MediaQuery.of(context).padding.top) *
+                  0.6, // calculate transaction list height dynamically.
+              child: TransactionList(_transactions, deleteTransaction),
+            ),
           ],
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: Platform.isAndroid ? FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () => _startAddNewTransaction(context),
-      ),
+      ) : Container(),
     );
   }
 }
