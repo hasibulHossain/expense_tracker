@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 import '../models/transaction.dart';
-
+import './transaction_item.dart';
 class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
   final Function deleteTransaction;
 
   TransactionList(this.transactions, this.deleteTransaction);
 
-  String getShorterVal(int val) { 
+  String _getShorterVal(int val) { 
     if (val >= 1000 && val < 1000000) {
       double convertInThousand = val / 1000;
       return '\$${convertInThousand.toInt()}k';
@@ -54,92 +53,14 @@ class TransactionList extends StatelessWidget {
                 ),
               ],
             )
-          : ListView(
-              children: transactions.map((item) {
+          : ListView.builder(itemBuilder: (ctx, index) { // ListView.builder used for large list
                 return Container(
                   margin: const EdgeInsets.symmetric(
                     vertical: 2,
                   ),
-                  child: Card(
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 10),
-                      child: Row(
-                        children: <Widget>[
-                          Container(
-                            margin: const EdgeInsets.only(right: 15),
-                            child: Container(
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Theme.of(context).primaryColor,
-                                  width: 2,
-                                ),
-                                color: Theme.of(context).primaryColor,
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                              child: Container(
-                                width: 80,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      getShorterVal(item.amount.toInt()),
-                                      style: const TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Container(
-                                margin: const EdgeInsets.only(bottom: 5),
-                                child: Text(
-                                  item.title,
-                                  style: const TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              Text(
-                                DateFormat.yMMMd().format(item.time),
-                                style: const TextStyle(
-                                  color: Colors.grey,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Flexible(
-                            fit: FlexFit.tight,
-                            child: Container(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  IconButton(
-                                    onPressed: () => deleteTransaction(item.id),
-                                    icon: Icon(Icons.delete),
-                                    color: Colors.red,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  child: TransactionItem(key: ValueKey(index), transaction: transactions[index], deleteTransaction: deleteTransaction, getShorterVal: _getShorterVal,)
                 );
-              }).toList(),
-            ),
+          }, itemCount: transactions.length,)
     );
   }
 }

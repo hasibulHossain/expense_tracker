@@ -5,7 +5,7 @@ class ChartBar extends StatelessWidget {
   final num spendingAmount;
   final double spendingPctOfTotal;
 
-  ChartBar(
+  const ChartBar(
       {required this.weekDay,
       required this.spendingAmount,
       required this.spendingPctOfTotal});
@@ -30,7 +30,6 @@ class ChartBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // print('spending total percantage $spendingPctOfTotal, total: $spendingAmount, weekday $weekDay');
     return LayoutBuilder(builder: (ctx, constraints) {
       return Column(
         children: <Widget>[

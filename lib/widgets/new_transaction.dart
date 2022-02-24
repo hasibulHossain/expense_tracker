@@ -7,16 +7,48 @@ import 'package:intl/intl.dart';
 class NewTransaction extends StatefulWidget {
   final Function createTransaction;
 
-  NewTransaction(this.createTransaction);
-
+  NewTransaction(this.createTransaction) {
+    print('from constructor NewTransaction widget');
+  }
+ 
   @override
-  State<NewTransaction> createState() => _NewTransactionState();
+  State<NewTransaction> createState() {
+    print('from NewTransaction createState');
+
+   return _NewTransactionState();
+  }
+    
 }
 
 class _NewTransactionState extends State<NewTransaction> {
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
   DateTime? _selectedDate;
+
+  _NewTransactionState() {
+    print('from _newTransactionState state');
+  }
+
+  @override
+  void initState() {
+    print('from _newTransaction initState');
+    // TODO: implement initState
+    super.initState(); // super is referred to parent class. 
+  }
+
+  @override
+  void didUpdateWidget(covariant NewTransaction oldWidget) {
+    print('from _newTransaction didUpdateWidget');
+    // TODO: implement didUpdateWidget
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  void dispose() {
+    print('from _newTransaction dispose');
+    // TODO: implement dispose
+    super.dispose();
+  }
 
   void _submitData() {
     String title = _titleController.text;
@@ -89,6 +121,7 @@ class _NewTransactionState extends State<NewTransaction> {
 
   @override
   Widget build(BuildContext context) {
+    print('from _newTransaction build method');
     return SingleChildScrollView(
       child: Card(
         elevation: 5,

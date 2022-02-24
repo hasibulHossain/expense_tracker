@@ -85,7 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   @override
-  Widget build(BuildContext) {
+  Widget build(BuildContext context) {
     final PreferredSizeWidget appBar = AppBar(
       title: const Text('Expense Tracker'),
       actions: <Widget>[
